@@ -72,13 +72,8 @@ python -m http.server 3000
 # Python 2
 python -m SimpleHTTPServer 3000
 ```
-
-**Option 3 — Using VS Code:**
-Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension and click **Go Live**.
-
-Then open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
+live working model
+auto-trust-car-resale.vercel.app
 
 ## 📸 Sections
 
