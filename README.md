@@ -72,9 +72,7 @@ python -m http.server 3000
 # Python 2
 python -m SimpleHTTPServer 3000
 ```
-live working model
 
-auto-trust-car-resale.vercel.app
 
 ## 📸 Sections
 
