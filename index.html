@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoTrust – Trusted Pre-Owned Cars</title>
+  <meta name="description"
+    content="Find your perfect second-hand car with AI-driven insights, depreciation analysis, price comparison, and interactive dashboards. AutoTrust helps you buy smarter." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css?v=2" />
+</head>
+
+<body>
+  <!-- VIDEO BACKGROUND (HLS via hls.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <video class="video-bg" id="videoBg" autoplay muted loop playsinline></video>
+  <div class="video-bg-overlay"></div>
+  <script>
+    (function() {
+      var video = document.getElementById('videoBg');
+      var src = 'https://stream.mux.com/jPyJ2YM6Nlly7U6EyfxM01tz4D4uPE3gyJ4PYuvY62Wg.m3u8';
+      if (Hls.isSupported()) {
+        var hls = new Hls({ autoStartLoad: true });
+        hls.loadSource(src);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = src;
+        video.addEventListener('loadedmetadata', function() { video.play(); });
+      }
+    })();
+  </script>
+
+  <!-- NAV -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="14" stroke="#2563eb" stroke-width="3" />
+          <path d="M20 6v14m0 0L9 26m11-6l11 6" stroke="#2563eb" stroke-width="3" stroke-linecap="round" />
+          <path d="M16 26l5 5 12-14" stroke="#f97316" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <span class="brand-name">AutoTrust</span>
+    </div>
+    <div class="nav-links">
+      <a href="#search" class="nav-link" id="nav-search">Search</a>
+      <a href="#dashboard" class="nav-link" id="nav-dashboard">Dashboard</a>
+      <a href="#compare" class="nav-link" id="nav-compare">Compare</a>
+      <a href="#chatbot" class="nav-link" id="nav-chat">Support</a>
+    </div>
+    <button class="nav-cta" onclick="scrollToSection('search')">Find My Car</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-particles" id="heroParticles"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        India's Most Trusted Pre-Owned Cars
+      </div>
+      <h1 class="hero-title">
+        Find Your Perfect<br />
+        <span class="gradient-text">Second-Hand Car</span>
+      </h1>
+      <p class="hero-subtitle">Real-time pricing · Depreciation analytics · AI recommendations · Smart insights</p>
+      <div class="hero-quick-search">
+        <div class="quick-search-bar">
+          <span class="search-icon"></span>
+          <input type="text" id="heroSearchInput" placeholder="Search by brand, model, or city..."
+            class="quick-input" onkeypress="handleKey(event, 'quickSearch')" />
+          <button class="quick-btn" onclick="runQuickSearch()">Search</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number" data-target="12547">0</div>
+          <div class="stat-label">Cars Listed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="98">0</div>
+          <div class="stat-label">Cities Covered</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="45">0</div>
+          <div class="stat-label">Brands Available</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="4.8">0</div>
+          <div class="stat-label">User Rating</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-car-visual">
+      <div class="car-showcase">
+        <div class="car-showcase-track" id="carShowcaseTrack">
+          <div class="car-showcase-slide active">
+            <div class="car-img-wrapper">
+              <div class="car-img-glow glow-dark"></div>
+              <img src="images/car_black.png" alt="Black Carbon Fiber Supercar" class="hero-car-img" id="heroCarImg1" />
+              <div class="car-img-overlay">
+                <div class="car-img-tags">
+                  <span class="car-tag tag-luxury">LUXURY</span>
+                  <span class="car-tag tag-supercar">SUPERCAR</span>
+                </div>
+                <div class="car-overlay-title">2023 Pagani Huayra</div>
+                <div class="car-overlay-price">₹28.5 Cr Est. Value</div>
+              </div>
+              <div class="car-number-plate" style="bottom: 27%; left: 42%; transform: translateX(-50%) rotate(2deg);"></div>
+            </div>
+          </div>
+          <div class="car-showcase-slide">
+            <div class="car-img-wrapper">
+              <div class="car-img-glow glow-red"></div>
+              <img src="images/car_red.png" alt="Red Ferrari Supercar" class="hero-car-img" id="heroCarImg2" />
+              <div class="car-img-overlay">
+                <div class="car-img-tags">
+                  <span class="car-tag tag-ferrari">FERRARI</span>
+                  <span class="car-tag tag-hot">HOT DEAL</span>
+                </div>
+                <div class="car-overlay-title">Ferrari SF90 Stradale</div>
+                <div class="car-overlay-price">₹7.5 Cr Est. Value</div>
+              </div>
+              <div class="car-number-plate" style="bottom: 14%; left: 43%; transform: translateX(-50%) rotate(-5deg);"></div>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-dots">
+          <span class="showcase-dot active" onclick="showCar(0)"></span>
+          <span class="showcase-dot" onclick="showCar(1)"></span>
+        </div>
+      </div>
+      <div class="floating-cards">
+        <div class="float-card fc1" onclick="filterHeroBadge('savings')"> Saved ₹2.1L</div>
+        <div class="float-card fc2" onclick="filterHeroBadge('fair')"> Fair Price</div>
+        <div class="float-card fc3" onclick="filterHeroBadge('rating')"> 4.9 Rated</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH SECTION -->
+  <section class="search-section" id="search">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title"> Personalized Car Search</h2>
+        <p class="section-subtitle">Fill in your preferences and let AI find the best matches</p>
+      </div>
+      <div class="search-form-card glass-card">
+        <div class="search-grid">
+          <div class="form-group">
+            <label class="form-label"> Location (City)</label>
+            <select class="form-select" id="locationSelect">
+              <option value="">Select City</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Bangalore">Bangalore</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Chennai">Chennai</option>
+              <option value="Kolkata">Kolkata</option>
+              <option value="Pune">Pune</option>
+              <option value="Ahmedabad">Ahmedabad</option>
+              <option value="Jaipur">Jaipur</option>
+              <option value="Surat">Surat</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label"> Car Brand</label>
+            <select class="form-select" id="brandSelect" onchange="updateModels()">
+              <option value="">Select Brand</option>
+              <option value="Maruti Suzuki">Maruti Suzuki</option>
+              <option value="Hyundai">Hyundai</option>
+              <option value="Tata">Tata</option>
+              <option value="Honda">Honda</option>
+              <option value="Toyota">Toyota</option>
+              <option value="Mahindra">Mahindra</option>
+              <option value="Kia">Kia</option>
+              <option value="Volkswagen">Volkswagen</option>
+              <option value="Skoda">Skoda</option>
+              <option value="MG">MG</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label"> Car Model</label>
+            <select class="form-select" id="modelSelect">
+              <option value="">Select Model</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label"> Fuel Type</label>
+            <div class="fuel-toggles">
+              <button class="fuel-btn active" data-fuel="all" onclick="setFuel(this)">All</button>
+              <button class="fuel-btn" data-fuel="Petrol" onclick="setFuel(this)"> Petrol</button>
+              <button class="fuel-btn" data-fuel="Diesel" onclick="setFuel(this)">� Diesel</button>
+              <button class="fuel-btn" data-fuel="Electric" onclick="setFuel(this)"> Electric</button>
+              <button class="fuel-btn" data-fuel="CNG" onclick="setFuel(this)">� CNG</button>
+            </div>
+          </div>
+          <div class="form-group budget-group">
+            <label class="form-label"> Budget Range</label>
+            <div class="budget-inputs">
+              <input type="number" class="form-input" id="budgetMin" placeholder="Min ₹" min="50000" step="10000" onkeypress="handleKey(event, 'search')" />
+              <span class="budget-to">to</span>
+              <input type="number" class="form-input" id="budgetMax" placeholder="Max ₹" max="5000000" step="10000" onkeypress="handleKey(event, 'search')" />
+            </div>
+            <div class="budget-presets">
+              <button class="preset-btn" onclick="setBudget(200000, 500000)">₹2L–5L</button>
+              <button class="preset-btn" onclick="setBudget(500000, 1000000)">₹5L–10L</button>
+              <button class="preset-btn" onclick="setBudget(1000000, 2000000)">₹10L–20L</button>
+              <button class="preset-btn" onclick="setBudget(2000000, 5000000)">₹20L+</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label"> Year of Manufacture</label>
+            <div class="year-range">
+              <input type="range" class="year-slider" id="yearSlider" min="2010" max="2024" value="2018"
+                oninput="updateYearLabel(this.value)" />
+              <div class="year-labels">
+                <span>2010</span>
+                <span class="year-current" id="yearLabel">2018 or newer</span>
+                <span>2024</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="search-actions">
+          <button class="btn-primary btn-xl" onclick="searchCars()" id="searchBtn">
+            <span class="btn-icon"></span>
+            Analyze & Find Cars
+          </button>
+          <button class="btn-secondary" onclick="resetSearch()">Clear Filters</button>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="results-section" id="resultsSection" style="display:none">
+        <div class="results-header">
+          <h3 class="results-title" id="resultsTitle">Found <span id="resultCount">0</span> Cars</h3>
+          <div class="results-sort">
+            <select class="sort-select" id="sortSelect" onchange="sortResults()">
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="year_desc">Newest First</option>
+              <option value="km_asc">Low KMs First</option>
+              <option value="value">Best Value</option>
+            </select>
+          </div>
+        </div>
+        <div class="car-grid" id="carGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD SECTION -->
+  <section class="dashboard-section" id="dashboard">
+    <div class="container">
+
+      <!-- HEADER + KPI INLINE BAR -->
+      <div class="dash-top-bar">
+        <div class="dash-title-block">
+          <h2 class="dash-title"> Market Analytics</h2>
+          <p class="dash-subtitle">Live insights · All charts at a glance</p>
+        </div>
+        <div class="dashboard-kpi-row">
+          <div class="kpi-card glass-card">
+            <div class="kpi-icon">�</div>
+            <div class="kpi-body">
+              <div class="kpi-value">Maruti Swift</div>
+              <div class="kpi-label">Hottest Segment · Petrol '21–'23</div>
+            </div>
+            <div class="kpi-trend kpi-up">↑ HOT</div>
+          </div>
+          <div class="kpi-card glass-card">
+            <div class="kpi-icon">�</div>
+            <div class="kpi-body">
+              <div class="kpi-value">Hyundai i20 2022</div>
+              <div class="kpi-label">Best Value Pick This Month</div>
+            </div>
+            <div class="kpi-trend kpi-up">↑ TOP</div>
+          </div>
+          <div class="kpi-card glass-card">
+            <div class="kpi-icon"></div>
+            <div class="kpi-body">
+              <div class="kpi-value">~18% / Year 1</div>
+              <div class="kpi-label">Avg. Market Depreciation Rate</div>
+            </div>
+            <div class="kpi-trend kpi-down">↓ DROP</div>
+          </div>
+          <div class="kpi-card glass-card">
+            <div class="kpi-icon"></div>
+            <div class="kpi-body">
+              <div class="kpi-value">+340% YoY</div>
+              <div class="kpi-label">EV Listings Growth</div>
+            </div>
+            <div class="kpi-trend kpi-up">↑ SURGE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALL 5 CHARTS IN ONE HORIZONTAL ROW -->
+      <div class="dashboard-charts-row">
+        <div class="chart-card glass-card">
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <h3>Price vs Year</h3>
+              <p class="chart-sub">Resale trend</p>
+            </div>
+            <span class="chart-badge"></span>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="priceYearChart"></canvas></div>
+        </div>
+        <div class="chart-card glass-card">
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <h3>Fuel Share</h3>
+              <p class="chart-sub">Market split</p>
+            </div>
+            <span class="chart-badge"></span>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="fuelChart"></canvas></div>
+        </div>
+        <div class="chart-card glass-card">
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <h3>KM vs Price</h3>
+              <p class="chart-sub">Mileage impact</p>
+            </div>
+            <span class="chart-badge"></span>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="kmPriceChart"></canvas></div>
+        </div>
+        <div class="chart-card glass-card">
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <h3>Brands</h3>
+              <p class="chart-sub">By listings</p>
+            </div>
+            <span class="chart-badge"></span>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="brandChart"></canvas></div>
+        </div>
+        <div class="chart-card glass-card">
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <h3>Depreciation</h3>
+              <p class="chart-sub">Value over years</p>
+            </div>
+            <span class="chart-badge"></span>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="depreciationChart"></canvas></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPARE SECTION -->
+  <section class="compare-section" id="compare">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title"> Side-by-Side Comparison</h2>
+        <p class="section-subtitle">Compare up to 3 cars to find your perfect match</p>
+      </div>
+      <div class="compare-selector">
+        <div class="compare-slots" id="compareSlots">
+          <div class="compare-slot" id="slot1">
+            <div class="slot-label">Car 1</div>
+            <select class="slot-select" onchange="addToCompare(this, 1)">
+              <option value="">Select a Car</option>
+            </select>
+          </div>
+          <div class="vs-badge">VS</div>
+          <div class="compare-slot" id="slot2">
+            <div class="slot-label">Car 2</div>
+            <select class="slot-select" onchange="addToCompare(this, 2)">
+              <option value="">Select a Car</option>
+            </select>
+          </div>
+          <div class="vs-badge">VS</div>
+          <div class="compare-slot" id="slot3">
+            <div class="slot-label">Car 3</div>
+            <select class="slot-select" onchange="addToCompare(this, 3)">
+              <option value="">Select a Car</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="runComparison()" style="margin-top:1rem;">Compare Now</button>
+      </div>
+      <div class="comparison-table-wrap" id="comparisonResult" style="display:none"></div>
+    </div>
+  </section>
+
+  <!-- DEPRECIATION TOOL -->
+  <section class="depreciation-section" id="depreciation">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title"> Depreciation Calculator</h2>
+        <p class="section-subtitle">See how your car's value changes over time</p>
+      </div>
+      <div class="depreciation-layout">
+        <div class="depreciation-inputs glass-card">
+          <div class="form-group">
+            <label class="form-label">Car Model</label>
+            <input type="text" class="form-input" id="depCarName" placeholder="e.g. Maruti Swift" onkeypress="handleKey(event, 'depreciation')" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Original Showroom Price (₹)</label>
+            <input type="number" class="form-input" id="depOriginalPrice" placeholder="e.g. 850000" onkeypress="handleKey(event, 'depreciation')" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Year of Purchase</label>
+            <select class="form-select" id="depYear">
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+              <option value="2017">2017</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fuel Type</label>
+            <select class="form-select" id="depFuel">
+              <option value="Petrol">Petrol</option>
+              <option value="Diesel">Diesel</option>
+              <option value="Electric">Electric</option>
+              <option value="CNG">CNG</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="calculateDepreciation()" style="width:100%">
+            Calculate Depreciation
+          </button>
+        </div>
+        <div class="depreciation-output glass-card" id="depOutput" style="display:none">
+          <div class="dep-summary" id="depSummary"></div>
+          <div class="dep-chart-container"><canvas id="depChart"></canvas></div>
+          <div class="dep-insights" id="depInsights"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI CHATBOT -->
+  <section class="chatbot-section" id="chatbot">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title"> AI Car Advisor</h2>
+        <p class="section-subtitle">Chat with our AI to get personalized car buying advice</p>
+      </div>
+      <div class="chatbot-container glass-card">
+        <div class="chatbot-header">
+          <div class="bot-avatar"></div>
+          <div class="bot-info">
+            <div class="bot-name">AutoTrust Support</div>
+            <div class="bot-status"><span class="online-dot"></span> Online · Ready to help</div>
+          </div>
+          <div class="chat-actions">
+            <button class="icon-btn" onclick="clearChat()" title="Clear chat">�</button>
+          </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-bubble bot-bubble">
+            <div class="bubble-avatar"></div>
+            <div class="bubble-content">
+              <p>Hello! I'm <strong>AutoTrust</strong>, your personal AI car shopping assistant. �</p>
+              <p>I can help you:</p>
+              <ul>
+                <li> Find the right car within your budget</li>
+                <li> Analyze depreciation and fair pricing</li>
+                <li>� Recommend the best value cars</li>
+                <li>� Estimate maintenance costs</li>
+              </ul>
+              <p>What are you looking for today?</p>
+              <div class="quick-replies">
+                <button class="quick-reply" onclick="sendQuickReply('Find me a car under ₹5 lakhs in Bangalore')">Cars
+                  under ₹5L in Bangalore</button>
+                <button class="quick-reply" onclick="sendQuickReply('Best value SUV for family use')">Best family
+                  SUV</button>
+                <button class="quick-reply" onclick="sendQuickReply('Show me electric cars available')">Electric
+                  Cars</button>
+                <button class="quick-reply" onclick="sendQuickReply('I want a low maintenance city car')">Low
+                  maintenance car</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <div class="chat-input-wrap">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Ask me anything about cars..."
+              onkeypress="handleChatKey(event)" />
+            <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+              <span>➤</span>
+            </button>
+          </div>
+          <div class="chat-suggestions" id="chatSuggestions">
+            <span class="suggestion-label">Try:</span>
+            <button class="sug-btn" onclick="sendQuickReply('Best petrol car under 8 lakh')">Best petrol car under
+              ₹8L</button>
+            <button class="sug-btn" onclick="sendQuickReply('Compare Swift vs i20 vs Baleno')">Swift vs i20 vs
+              Baleno</button>
+            <button class="sug-btn" onclick="sendQuickReply('EMI for 6 lakh car')">EMI calculation</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="14" stroke="#2563eb" stroke-width="3" />
+              <path d="M20 6v14m0 0L9 26m11-6l11 6" stroke="#2563eb" stroke-width="3" stroke-linecap="round" />
+              <path d="M16 26l5 5 12-14" stroke="#f97316" stroke-width="4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <span class="brand-name">AutoTrust</span>
+          <p class="footer-tagline">Powered by AI to make smarter car buying decisions</p>
+        </div>
+        <div class="footer-links-grid">
+          <div class="footer-col">
+            <h4>Features</h4>
+            <a href="#search">Car Search</a>
+            <a href="#dashboard">Analytics</a>
+            <a href="#compare">Compare</a>
+            <a href="#depreciation">Depreciation</a>
+          </div>
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <a href="#chatbot">Support</a>
+            <a href="javascript:void(0)" onclick="openEMICalculatorModal()">EMI Calculator</a>
+            <a href="javascript:void(0)" onclick="openDealerLocatorModal()">Dealer Locator</a>
+            <a href="javascript:void(0)" onclick="openCarReviewsModal()">Car Reviews</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 AutoTrust · AI-Powered Resale Car Intelligence Platform</p>
+        <p class="disclaimer">Data shown is for demonstration purposes. Always verify with dealers before purchase.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data.js?v=2"></script>
+  <script src="charts.js?v=2"></script>
+  <script src="chatbot.js?v=2"></script>
+  <script src="app.js?v=2"></script>
+</body>
+
+</html>
