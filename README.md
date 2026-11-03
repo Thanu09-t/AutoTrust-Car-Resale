@@ -10,9 +10,9 @@
 
 - **🔍 Smart Car Search** — Filter by brand, model, city, fuel type, budget, and year with AI-driven results
 - **📊 Market Analytics Dashboard** — Live charts for price trends, fuel share, mileage impact, brand popularity, and depreciation curves
-- **⚖️ Side-by-Side Comparison** — Compare up to 3 cars across all key specs
-- **📉 Depreciation Calculator** — Estimate how any car's value changes over time
-- **🤖 AI Car Advisor Chatbot** — Get personalized buying advice through conversational AI
+- **⚖️ Side-by-Side Comparison** — Compare up to 3 cars across all key specs.
+- **📉 Depreciation Calculator** — Estimate how any car's value changes over time.
+- **🤖 AI Car Advisor Chatbot** — Get personalized buying advice through conversational AI.
 - **🎬 3D Animated Video Background** — Immersive HLS video background powered by Mux.
 
 ---
