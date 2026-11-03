@@ -13,7 +13,7 @@
 - **⚖️ Side-by-Side Comparison** — Compare up to 3 cars across all key specs
 - **📉 Depreciation Calculator** — Estimate how any car's value changes over time
 - **🤖 AI Car Advisor Chatbot** — Get personalized buying advice through conversational AI
-- **🎬 3D Animated Video Background** — Immersive HLS video background powered by Mux
+- **🎬 3D Animated Video Background** — Immersive HLS video background powered by Mux.
 
 ---
 
